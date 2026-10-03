@@ -1,0 +1,23 @@
+﻿services:
+  backend:
+    build: .
+    container_name: movies-backend
+    hostname: movies-backend
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    ports:
+      - "8001:80"
+    environment:
+      KEYCLOAK_INTERNAL: http://keycloak:8080
+      KEYCLOAK_PUBLIC: http://localhost:8081
+      KEYCLOAK_REALM: cybersecurity
+      KEYCLOAK_CLIENT_ID: fastapi-api
+    networks:
+      - auth-network
+    restart: unless-stopped
+
+networks:
+  auth-network:
+    external: true
+    name: ldap-keycloak-oauth2-lab_auth-network
